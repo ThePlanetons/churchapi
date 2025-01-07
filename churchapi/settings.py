@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
+    'auth_app',
     'member_app',
 ]
 
@@ -110,10 +112,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+    #     'rest_framework.authentication.BasicAuthentication',
+    #     'rest_framework.authentication.SessionAuthentication',
+    # ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ],
@@ -122,6 +127,12 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer', # Useful for development
     ]
 }
+
+
+AUTHENTICATION_BACKENDS = [
+    'auth_app.backends.EmailOrUsernameBackend',  # Custom backend
+    'django.contrib.auth.backends.ModelBackend',  # Default backend
+]
 
 
 # Internationalization
