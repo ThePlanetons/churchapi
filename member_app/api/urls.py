@@ -3,8 +3,8 @@ from member_app.api.views import MemberListAV, MemberDetailsAV
 from member_app.api.views import MemberConfigListAV
 
 urlpatterns = [
-    path('list/', MemberListAV.as_view(), name='member-list-info'),  
+    path('', MemberListAV.as_view(), name='member-list-info'),  
     path('<int:pk>/', MemberDetailsAV.as_view(), name='member-details'),
 
-    path('config/list/', MemberConfigListAV.as_view(), name='member-config-list-info'),  
+    path('config/', MemberConfigListAV.as_view(), name='member-config-list-info'),  
 ]
