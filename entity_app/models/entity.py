@@ -6,7 +6,7 @@ class entity(models.Model):
     name = models.CharField(max_length=500)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.CharField(max_length=250)
+    created_by = models.CharField(max_length=250, null=True)
     updated_at = models.DateTimeField(auto_now=True)
     updated_by = models.CharField(max_length=250, null=True)
 

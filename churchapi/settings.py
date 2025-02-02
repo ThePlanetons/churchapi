@@ -137,8 +137,8 @@ AUTHENTICATION_BACKENDS = [
 
 from datetime import timedelta
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Access token expires in 5 minutes
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),    # Refresh token expires in 1 day
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),    # Access token expires in 5 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # Refresh token expires in 1 day
     'ROTATE_REFRESH_TOKENS': True,                 # Issue a new refresh token with each access token
     'BLACKLIST_AFTER_ROTATION': True,              # Blacklist the old refresh token after rotation
     'AUTH_HEADER_TYPES': ('Bearer',),              # Prefix for the token in headers

@@ -8,8 +8,9 @@ class member(models.Model):
     date_of_birth = models.DateField()
     phone = models.CharField(max_length=20)
     gender = models.CharField(max_length=20)
+    entity = models.ForeignKey('entity_app.entity', on_delete=models.SET_NULL, null=True, related_name='funds')
 
-    dynamic_fields = models.JSONField(default=dict)  
+    dynamic_fields = models.JSONField(default=dict)
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=250, null=True)

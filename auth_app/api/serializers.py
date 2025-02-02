@@ -7,8 +7,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Format the response to include tokens under the 'token' key
         data['token'] = {
-            'refresh': data.pop('refresh'),
             'access': data.pop('access'),
+            'refresh': data.pop('refresh'),
         }
 
         # Add custom user data to the response
@@ -24,3 +24,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         })
 
         return data
+
+from django.contrib.auth.models import User
+from rest_framework import serializers
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name','last_name', 'username', 'email', 'date_joined', 'is_active']
