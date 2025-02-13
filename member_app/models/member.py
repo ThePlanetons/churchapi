@@ -1,12 +1,12 @@
 from django.db import models
 
+TITHE_PAY_CHOICES = [
+    ("person", "Person Pay"),
+    ("group", "Group Pay"),
+]
+
 # Create your models here.
 class member(models.Model):
-    TITHE_PAY_CHOICES = [
-        ("person", "Person Pay"),
-        ("group", "Group Pay"),
-    ]
-
     entity = models.ForeignKey('entity_app.entity', on_delete=models.SET_NULL, null=True, related_name='funds')
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -14,13 +14,14 @@ class member(models.Model):
     date_of_birth = models.DateField()
     phone = models.CharField(max_length=20)
     gender = models.CharField(max_length=20)
+    address_1 = models.CharField(max_length=510)
+    address_2 = models.CharField(max_length=510, blank=True)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=50)
     tithe_pay = models.BooleanField(default=False)
-    tithe_pay_type = models.CharField(
-        max_length=50,
-        choices=TITHE_PAY_CHOICES,
-        blank=True,
-        null=True
-    )
+    tithe_pay_type = models.CharField(max_length=50, choices=TITHE_PAY_CHOICES, blank=True, null=True)
 
     dynamic_fields = models.JSONField(default=dict)
 

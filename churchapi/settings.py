@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'auth_app',
     'member_app',
-    'entity_app'
+    'entity_app',
+    'collection_app'
 ]
 
 MIDDLEWARE = [

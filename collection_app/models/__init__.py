@@ -1,0 +1,1 @@
+from collection_app.models.collection import collection
