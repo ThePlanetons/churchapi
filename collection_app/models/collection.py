@@ -1,28 +1,10 @@
 from django.db import models
-import shortuuid
-
-COLLECTION_TYPE_CHOICES = [
-    ('tithes', 'Tithes'),
-    ('mission', 'Mission'),
-    ('partnership', 'Partnership'),
-    ('offering', 'Offering')
-]
-
-TRANSACTION_TYPE_CHOICES = [
-    ('cash', 'Cash'),
-    ('bank_transfer', 'Bank Transfer'),
-    ('online', 'Online Payment'),
-    ('other', 'Other'),
-]
 
 # Create your models here.
 class collection(models.Model):
-    member = models.ForeignKey("member_app.member", on_delete=models.SET_NULL, null=True, related_name='funds')
-    collection_type = models.CharField(max_length=50, choices=COLLECTION_TYPE_CHOICES)
-    collection_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    transaction_id = models.CharField(max_length=20, unique=True, editable=False, default=shortuuid.uuid)
-    transaction_date = models.DateTimeField()
-    transaction_type = models.CharField(max_length=50, choices=TRANSACTION_TYPE_CHOICES)
+    first_approver = models.ForeignKey('member_app.member', on_delete=models.SET_NULL, null=True, related_name='first_approver_1')
+    second_approver = models.ForeignKey('member_app.member', on_delete=models.SET_NULL, null=True, related_name='second_approver_2')
+    date = models.DateTimeField(auto_now_add=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=250, null=True)
@@ -30,6 +12,6 @@ class collection(models.Model):
     updated_by = models.CharField(max_length=250, null=True)
 
     def __str__(self):
-        return f"Fund of {self.collection_amount} by {self.member.first_name} {self.member.last_name}"
+        return f"Fund of by {self.first_approver.first_name} {self.first_approver.last_name}"
     class Meta:
         db_table='collection'
