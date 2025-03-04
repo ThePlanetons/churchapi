@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,8 +30,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    '.vercel.app', 
+    '.now.sh'
     # 'localhost',
 ]
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -94,25 +101,23 @@ DATABASES = {
     }
 }
 
-import os
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'harvest',
-        'USER': 'postgres',
-        'PASSWORD': 'TP9#2025tp9',
-        'HOST': 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com',
-        'PORT': '5432',
-    }
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': os.getenv('DBNAME', 'harvest'),
-    #     'USER': os.getenv('DBUSER', 'postgres'),
-    #     'PASSWORD': os.getenv('DBCRED', 'TP9#2025tp9'),
-    #     # 'HOST': '54.156.12.1',
-    #     'HOST': os.getenv('DBHOST', 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com'),
+    #     'NAME': 'harvest',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'TP9#2025tp9',
+    #     'HOST': 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com',
     #     'PORT': '5432',
-    # },
+    # }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DBNAME', 'harvest'),
+        'USER': os.getenv('DBUSER', 'postgres'),
+        'PASSWORD': os.getenv('DBCRED', 'TP9#2025tp9'),
+        'HOST': os.getenv('DBHOST', 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com'),
+        'PORT': '5432',
+    },
     # 'channels_postgres': {
 	# 	'ENGINE': 'django.db.backends.postgresql',
 	# 	'NAME': os.getenv('DBNAME','registrydb'),

@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from churchapi import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('auth_app.api.urls')),
@@ -24,3 +26,6 @@ urlpatterns = [
     path('api/entities/', include('entity_app.api.urls')),
     path('api/collections/', include('collection_app.api.urls')),
 ]
+
+# if settings.DEBUG:
+#     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
