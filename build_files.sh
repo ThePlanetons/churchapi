@@ -11,3 +11,6 @@ pip install -r requirements.txt
 
 # Collect Static Files
 python3 manage.py collectstatic --noinput
+
+# Migrate DB
+python3 manage.py migrate
