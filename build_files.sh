@@ -1,2 +1,10 @@
+#!/bin/bash
+
+# Install pip
+curl -sS https://bootstrap.pypa.io/get-pip.py | python3
+
+# Install dependencies
 pip install -r requirements.txt
-python3.9 manage.py collectstatic --noinput
+
+# Collect static files
+python manage.py collectstatic --noinput
