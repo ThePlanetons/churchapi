@@ -9,8 +9,8 @@ export PATH="/python312/bin:$PATH"
 # Use python3 instead of python
 pip install -r requirements.txt
 
+# # Migrate DB
+# python3 manage.py migrate
+
 # Collect Static Files
 python3 manage.py collectstatic --noinput
-
-# Migrate DB
-python3 manage.py migrate

@@ -103,51 +103,51 @@ WSGI_APPLICATION = 'churchapi.wsgi.application'
 #     }
 # }
 
-import dj_database_url
-if os.environ.get("DATABASE_URL"):
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=f"postgres://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
-        )
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("DB_NAME"),
-            "USER": os.environ.get("DB_USER"),
-            "PASSWORD": os.environ.get("DB_PASSWORD"),
-            "HOST": os.environ.get("DB_HOST"),
-            "PORT": os.environ.get("DB_PORT"),
-        }
-    }
-
-# DATABASES = {
-#     # 'default': {
-#     #     'ENGINE': 'django.db.backends.postgresql',
-#     #     'NAME': 'harvest',
-#     #     'USER': 'postgres',
-#     #     'PASSWORD': 'TP9#2025tp9',
-#     #     'HOST': 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com',
-#     #     'PORT': '5432',
-#     # }
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.environ.get("DB_NAME"),
-#         "USER": os.environ.get("DB_USER"),
-#         "PASSWORD": os.environ.get("DB_PASSWORD"),
-#         "HOST": os.environ.get("DB_HOST"),
-#         "PORT": os.environ.get("DB_PORT"),
+# import dj_database_url
+# if os.environ.get("DATABASE_URL"):
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             default=f"postgres://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+#         )
 #     }
-#     # 'channels_postgres': {
-# 	# 	'ENGINE': 'django.db.backends.postgresql',
-# 	# 	'NAME': os.getenv('DBNAME','registrydb'),
-# 	# 	'USER': os.getenv('DBUSER','apiuser'),
-# 	# 	'PASSWORD': os.getenv('DBCRED','DevApi4s6#'),
-# 	# 	'HOST': os.getenv('DBHOST','54.156.12.1'),
-# 	# 	'PORT': '5432',
-# 	# }
-# }
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.postgresql",
+#             "NAME": os.environ.get("DB_NAME"),
+#             "USER": os.environ.get("DB_USER"),
+#             "PASSWORD": os.environ.get("DB_PASSWORD"),
+#             "HOST": os.environ.get("DB_HOST"),
+#             "PORT": os.environ.get("DB_PORT"),
+#         }
+#     }
+
+DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'harvest',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'TP9#2025tp9',
+    #     'HOST': 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com',
+    #     'PORT': '5432',
+    # }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
+    }
+    # 'channels_postgres': {
+	# 	'ENGINE': 'django.db.backends.postgresql',
+	# 	'NAME': os.getenv('DBNAME','registrydb'),
+	# 	'USER': os.getenv('DBUSER','apiuser'),
+	# 	'PASSWORD': os.getenv('DBCRED','DevApi4s6#'),
+	# 	'HOST': os.getenv('DBHOST','54.156.12.1'),
+	# 	'PORT': '5432',
+	# }
+}
 
 
 # Password validation
