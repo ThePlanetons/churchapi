@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -110,14 +112,14 @@ DATABASES = {
     #     'HOST': 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com',
     #     'PORT': '5432',
     # }
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DBNAME', 'harvest'),
-        'USER': os.getenv('DBUSER', 'postgres'),
-        'PASSWORD': os.getenv('DBCRED', 'TP9#2025tp9'),
-        'HOST': os.getenv('DBHOST', 'planetons.c7gososg8cmw.ap-south-1.rds.amazonaws.com'),
-        'PORT': '5432',
-    },
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
+    }
     # 'channels_postgres': {
 	# 	'ENGINE': 'django.db.backends.postgresql',
 	# 	'NAME': os.getenv('DBNAME','registrydb'),
