@@ -4,7 +4,7 @@ from django.db import models
 class collection(models.Model):
     first_approver = models.ForeignKey('member_app.member', on_delete=models.SET_NULL, null=True, related_name='first_approver_1')
     second_approver = models.ForeignKey('member_app.member', on_delete=models.SET_NULL, null=True, related_name='second_approver_2')
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField()
 
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.CharField(max_length=250, null=True)

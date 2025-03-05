@@ -70,10 +70,12 @@ class CollectionViewSet(viewsets.ViewSet):
             # Save Collection
             first_approver = member.objects.get(id=request.data["first_approver"])
             second_approver = member.objects.get(id=request.data["second_approver"])
+            date = member.objects.get(id=request.data["date"])
 
             collection_obj = collection.objects.create(
                 first_approver=first_approver,
-                second_approver=second_approver
+                second_approver=second_approver,
+                date=date
             )
 
             # Save Collection Transactions

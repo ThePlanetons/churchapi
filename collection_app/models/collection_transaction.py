@@ -21,7 +21,7 @@ class collection_transaction(models.Model):
     collection_type = models.CharField(max_length=50, choices=COLLECTION_TYPE_CHOICES)
     collection_amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_id = models.CharField(max_length=20, unique=True, editable=False)
-    transaction_date = models.DateTimeField()
+    transaction_date = models.DateField()
     transaction_type = models.CharField(max_length=50, choices=TRANSACTION_TYPE_CHOICES)
 
     created_at = models.DateTimeField(auto_now_add=True)
