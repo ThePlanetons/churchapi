@@ -17,7 +17,8 @@ TRANSACTION_TYPE_CHOICES = [
 
 # Create your models here.
 class collection_transaction(models.Model):
-    member = models.ForeignKey("member_app.member", on_delete=models.SET_NULL, null=True, related_name='funds')
+    member = models.ForeignKey('member_app.member', on_delete=models.SET_NULL, null=True, related_name='funds')
+    collection = models.ForeignKey('collection_app.collection', on_delete=models.SET_NULL, null=True, related_name='ct_collection_id')
     collection_type = models.CharField(max_length=50, choices=COLLECTION_TYPE_CHOICES)
     collection_amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_id = models.CharField(max_length=20, unique=True, editable=False)

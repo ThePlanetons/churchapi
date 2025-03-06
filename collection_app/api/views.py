@@ -78,23 +78,31 @@ class CollectionViewSet(viewsets.ViewSet):
                 date=date
             )
 
-            # Save Collection Transactions
+            # Save Collection Transactions with bulk_create
             collection_types = ["Tithes", "Mission", "Partnership", "Offering"]
+            transactions_to_create = []
 
             for collection_type in collection_types:
                 transactions = request.data.get(collection_type, [])
 
                 for item in transactions:
                     member_id = item.get("member")
-                    member_obj = member.objects.get(id=member_id) if member_id else None
+                    member_obj = member.objects.filter(id=member_id).first() if member_id else None
 
-                    collection_transaction.objects.create(
-                        member=member_obj,
-                        collection_type=collection_type,
-                        collection_amount=item.get("collection_amount"),
-                        transaction_date=item.get("transaction_date"),
-                        transaction_type=item.get("transaction_type")
-                    )
+                    if item.get("collection_amount"):
+                        transactions_to_create.append(
+                            collection_transaction(
+                                collection=collection_obj,
+                                member=member_obj,
+                                collection_type=collection_type,
+                                collection_amount=item.get("collection_amount"),
+                                transaction_date=item.get("transaction_date"),
+                                transaction_type=item.get("transaction_type")
+                            )
+                        )
+
+            if transactions_to_create:
+                collection_transaction.objects.bulk_create(transactions_to_create)
 
             return Response({"message": "Saved Successfully"}, status=status.HTTP_201_CREATED)
 
