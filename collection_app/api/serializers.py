@@ -21,12 +21,30 @@ class CollectionSerializer(serializers.ModelSerializer):
         return None
 
     def get_transactions(self, obj):
-        collection_types = ["Tithes", "Mission", "Partnership", "Offering"]
-        grouped = {}
-        for type in collection_types:
-            transactions = obj.ct_collection_id.filter(collection_type=type)
-            grouped[type] = CollectionTransactionSerializer(transactions, many=True).data
-        return grouped
+        transactions = {
+            "Tithes": obj.ct_collection_id.filter(collection_type="Tithes").values(),
+            "Mission": obj.ct_collection_id.filter(collection_type="Mission").values(),
+            "Partnership": obj.ct_collection_id.filter(collection_type="Partnership").values(),
+            "Offering": obj.ct_collection_id.filter(collection_type="Offering").values(),
+        }
+
+        # Calculate Grand Total
+        grand_total = 0
+        for key in transactions:
+            total = sum(float(t["collection_amount"]) for t in transactions[key] if "collection_amount" in t)
+            grand_total += total
+
+        transactions["grand_total"] = grand_total
+
+        return transactions
+
+    # def get_transactions(self, obj):
+    #     collection_types = ["Tithes", "Mission", "Partnership", "Offering"]
+    #     grouped = {}
+    #     for type in collection_types:
+    #         transactions = obj.ct_collection_id.filter(collection_type=type)
+    #         grouped[type] = CollectionTransactionSerializer(transactions, many=True).data
+    #     return grouped
 
 class CollectionTransactionSerializer(serializers.ModelSerializer):
     class Meta:
