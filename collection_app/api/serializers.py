@@ -21,11 +21,18 @@ class CollectionSerializer(serializers.ModelSerializer):
         return None
 
     def get_transactions(self, obj):
+        # transactions = {
+        #     "Tithes": obj.ct_collection_id.filter(collection_type="Tithes").values(),
+        #     "Mission": obj.ct_collection_id.filter(collection_type="Mission").values(),
+        #     "Partnership": obj.ct_collection_id.filter(collection_type="Partnership").values(),
+        #     "Offering": obj.ct_collection_id.filter(collection_type="Offering").values(),
+        # }
+
         transactions = {
-            "Tithes": obj.ct_collection_id.filter(collection_type="Tithes").values(),
-            "Mission": obj.ct_collection_id.filter(collection_type="Mission").values(),
-            "Partnership": obj.ct_collection_id.filter(collection_type="Partnership").values(),
-            "Offering": obj.ct_collection_id.filter(collection_type="Offering").values(),
+            "Tithes": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Tithes"), many=True).data,
+            "Mission": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Mission"), many=True).data,
+            "Partnership": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Partnership"), many=True).data,
+            "Offering": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Offering"), many=True).data,
         }
 
         # Calculate Grand Total
@@ -47,6 +54,13 @@ class CollectionSerializer(serializers.ModelSerializer):
     #     return grouped
 
 class CollectionTransactionSerializer(serializers.ModelSerializer):
+    member_name = serializers.SerializerMethodField()
+
+    def get_member_name(self, obj):
+        if obj.member:
+            return f"{obj.member.first_name} {obj.member.last_name}"
+        return None
+
     class Meta:
         model = collection_transaction
         fields = '__all__'

@@ -21,7 +21,7 @@ class collection_transaction(models.Model):
     collection = models.ForeignKey('collection_app.collection', on_delete=models.SET_NULL, null=True, related_name='ct_collection_id')
     collection_type = models.CharField(max_length=50, choices=COLLECTION_TYPE_CHOICES)
     collection_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    transaction_id = models.CharField(max_length=20, unique=True, editable=False)
+    transaction_id = models.CharField(max_length=50, unique=True, editable=False)
     transaction_date = models.DateField()
     transaction_type = models.CharField(max_length=50, choices=TRANSACTION_TYPE_CHOICES)
 

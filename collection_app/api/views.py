@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import status, generics, filters
+from rest_framework import status, generics, filters, pagination
 from collection_app.models import *
 from collection_app.api.serializers import *
 
@@ -10,12 +10,19 @@ from django.db import transaction
 from collection_app.models import collection, collection_transaction
 from member_app.models import member
 
+import shortuuid
+
 # from churchapi.pagination import pagePagination
+
+class CustomPagination(pagination.PageNumberPagination):
+    page_size = 10  # Items per page
+    page_size_query_param = "page_size"  # Allow dynamic page size
+    max_page_size = 100  # Limit max page size
 
 # Collection - List Create
 class CollectionListAV(generics.ListCreateAPIView):
     serializer_class = CollectionSerializer
-    # pagination_class = pagePagination
+    pagination_class = CustomPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     # search_fields = ['first_name', 'last_name', 'person_submitting', 'email_address', 'phone']
 
@@ -63,6 +70,7 @@ class CollectionTransactionDetailsAV(generics.RetrieveUpdateDestroyAPIView):
     #     membershipDetails.delete()
     #     return Response(status=status.HTTP_200_OK)
 
+
 class CollectionViewSet(viewsets.ViewSet):
     @transaction.atomic
     def create(self, request):
@@ -96,6 +104,7 @@ class CollectionViewSet(viewsets.ViewSet):
                                 member=member_obj,
                                 collection_type=collection_type,
                                 collection_amount=item.get("collection_amount"),
+                                transaction_id=shortuuid.uuid(),
                                 transaction_date=item.get("transaction_date"),
                                 transaction_type=item.get("transaction_type")
                             )
