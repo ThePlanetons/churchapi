@@ -21,14 +21,15 @@ class CustomPagination(pagination.PageNumberPagination):
 
 # Collection - List Create
 class CollectionListAV(generics.ListCreateAPIView):
+    queryset = collection.objects.select_related('first_approver', 'second_approver').all()
     serializer_class = CollectionSerializer
     pagination_class = CustomPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     # search_fields = ['first_name', 'last_name', 'person_submitting', 'email_address', 'phone']
 
-    def get_queryset(self):
-        collectionInfo = collection.objects.filter()
-        return collectionInfo
+    # def get_queryset(self):
+    #     collectionInfo = collection.objects.filter()
+    #     return collectionInfo
 
 # Collection - Retrieve Update Destroy
 class CollectionDetailsAV(generics.RetrieveUpdateDestroyAPIView):
