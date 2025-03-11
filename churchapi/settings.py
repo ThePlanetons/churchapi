@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '.vercel.app', 
     '.now.sh'
-    # 'localhost',
+    # 'localhost',``
 ]
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]

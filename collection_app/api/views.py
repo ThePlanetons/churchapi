@@ -121,3 +121,63 @@ class CollectionViewSet(viewsets.ViewSet):
 
         except Exception as e:
             return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @transaction.atomic
+    def update(self, request, pk=None):
+        try:
+            collection_obj = collection.objects.get(id=pk)
+
+            # Update collection fields
+            collection_obj.first_approver = member.objects.get(id=request.data["first_approver"])
+            collection_obj.second_approver = member.objects.get(id=request.data["second_approver"])
+            collection_obj.date = request.data["date"]
+            collection_obj.save()
+
+            collection_types = ["Tithes", "Mission", "Partnership", "Offering"]
+            existing_transactions = collection_transaction.objects.filter(collection=collection_obj)
+            existing_transaction_ids = {tx.transaction_id for tx in existing_transactions}
+            new_transaction_ids = set()
+
+            for collection_type in collection_types:
+                transactions = request.data.get(collection_type, [])
+
+                for item in transactions:
+                    transaction_id = item.get("transaction_id", shortuuid.uuid())  # Keep or generate new ID
+                    new_transaction_ids.add(transaction_id)
+
+                    # Check if transaction already exists
+                    transaction_obj = collection_transaction.objects.filter(transaction_id=transaction_id).first()
+
+                    if transaction_obj:
+                        # Update existing transaction
+                        transaction_obj.member = member.objects.filter(id=item.get("member")).first()
+                        transaction_obj.collection_amount = item.get("collection_amount")
+                        transaction_obj.transaction_date = item.get("transaction_date")
+                        transaction_obj.transaction_type = item.get("transaction_type")
+                        transaction_obj.save()
+                    else:
+                        # Create new transaction
+                        collection_transaction.objects.create(
+                            collection=collection_obj,
+                            member=member.objects.filter(id=item.get("member")).first(),
+                            collection_type=collection_type,
+                            collection_amount=item.get("collection_amount"),
+                            transaction_id=transaction_id,
+                            transaction_date=item.get("transaction_date"),
+                            transaction_type=item.get("transaction_type")
+                        )
+
+            # Delete transactions that were not included in the update request
+            transactions_to_delete = existing_transaction_ids - new_transaction_ids
+            collection_transaction.objects.filter(transaction_id__in=transactions_to_delete).delete()
+
+            return Response({"message": "Updated Successfully"}, status=status.HTTP_200_OK)
+
+        except collection.DoesNotExist:
+            return Response({"message": "Collection Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+        except member.DoesNotExist:
+            return Response({"message": "Member Not Found"}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
