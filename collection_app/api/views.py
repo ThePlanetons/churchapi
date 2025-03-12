@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import status, generics, filters, pagination
+from rest_framework import status, generics, filters
 from collection_app.models import *
 from collection_app.api.serializers import *
 
@@ -12,18 +12,10 @@ from member_app.models import member
 
 import shortuuid
 
-# from churchapi.pagination import pagePagination
-
-class CustomPagination(pagination.PageNumberPagination):
-    page_size = 10  # Items per page
-    page_size_query_param = "page_size"  # Allow dynamic page size
-    max_page_size = 100  # Limit max page size
-
 # Collection - List Create
 class CollectionListAV(generics.ListCreateAPIView):
     queryset = collection.objects.select_related('first_approver', 'second_approver').all()
     serializer_class = CollectionSerializer
-    pagination_class = CustomPagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     # search_fields = ['first_name', 'last_name', 'person_submitting', 'email_address', 'phone']
 
