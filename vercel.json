@@ -22,6 +22,10 @@
     {
       "src": "/(.*)",
       "dest": "churchapi/wsgi.py"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "api/$1"
     }
   ],
   "outputDirectory": "staticfiles",
