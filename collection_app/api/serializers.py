@@ -29,10 +29,10 @@ class CollectionSerializer(serializers.ModelSerializer):
         # }
 
         transactions = {
-            "Tithes": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Tithes"), many=True).data,
-            "Mission": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Mission"), many=True).data,
-            "Partnership": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Partnership"), many=True).data,
-            "Offering": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Offering"), many=True).data,
+            "Tithes": CollectionTransactionSerializer(obj.ct_collection_id.select_related('member', 'collection').filter(collection_type="Tithes"), many=True).data,
+            "Mission": CollectionTransactionSerializer(obj.ct_collection_id.select_related('member', 'collection').filter(collection_type="Mission"), many=True).data,
+            "Partnership": CollectionTransactionSerializer(obj.ct_collection_id.select_related('member', 'collection').filter(collection_type="Partnership"), many=True).data,
+            "Offering": CollectionTransactionSerializer(obj.ct_collection_id.select_related('member', 'collection').filter(collection_type="Offering"), many=True).data,
         }
 
         # Calculate Grand Total
