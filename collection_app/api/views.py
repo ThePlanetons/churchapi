@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status, generics, filters
+from churchapi.pagination import StandardResultsSetPagination
 from collection_app.models import *
 from collection_app.api.serializers import *
 
@@ -15,6 +16,7 @@ import shortuuid
 # Collection - List Create
 class CollectionListAV(generics.ListCreateAPIView):
     queryset = collection.objects.select_related('first_approver', 'second_approver').all()
+    pagination_class = StandardResultsSetPagination
     serializer_class = CollectionSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     # search_fields = ['first_name', 'last_name', 'person_submitting', 'email_address', 'phone']
