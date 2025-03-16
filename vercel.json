@@ -24,5 +24,10 @@
       "dest": "churchapi/wsgi.py"
     }
   ],
-  "outputDirectory": "staticfiles"
+  "outputDirectory": "staticfiles",
+  "functions": {
+    "api/collections.py": {
+      "maxDuration": 60
+    }
+  }
 }
