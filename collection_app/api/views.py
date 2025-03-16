@@ -30,7 +30,7 @@ class CollectionDetailsAV(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CollectionSerializer
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        collectionDetails = collection.objects.filter(id=pk)
+        collectionDetails = collection.objects.select_related('first_approver', 'second_approver').filter(id=pk)
         return collectionDetails
 
     # def delete(self, request, *args, **kwargs):
@@ -47,7 +47,7 @@ class CollectionTransactionListAV(generics.ListCreateAPIView):
     # search_fields = ['first_name', 'last_name', 'person_submitting', 'email_address', 'phone']
 
     def get_queryset(self):
-        membershipInfo = collection_transaction.objects.filter()
+        membershipInfo = collection_transaction.objects.select_related('member', 'collection').filter()
         return membershipInfo
 
 # Collection - Retrieve Update Destroy
@@ -56,7 +56,7 @@ class CollectionTransactionDetailsAV(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        membershipDetails = collection_transaction.objects.filter(id=pk)
+        membershipDetails = collection_transaction.objects.select_related('member', 'collection').filter(id=pk)
         return membershipDetails
 
     # def delete(self, request, *args, **kwargs):
@@ -64,7 +64,6 @@ class CollectionTransactionDetailsAV(generics.RetrieveUpdateDestroyAPIView):
     #     membershipDetails = member.objects.filter(id=pk).select_related('staff_id')
     #     membershipDetails.delete()
     #     return Response(status=status.HTTP_200_OK)
-
 
 class CollectionViewSet(viewsets.ViewSet):
     @transaction.atomic

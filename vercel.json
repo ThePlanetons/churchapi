@@ -22,16 +22,7 @@
     {
       "src": "/(.*)",
       "dest": "churchapi/wsgi.py"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "api/$1"
     }
   ],
-  "outputDirectory": "staticfiles",
-  "functions": {
-    "api/collections.py": {
-      "maxDuration": 60
-    }
-  }
+  "outputDirectory": "staticfiles"
 }
