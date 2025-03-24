@@ -3,17 +3,15 @@ from rest_framework import status, generics, filters
 from member_app.models import *
 from member_app.api.serializers import *
 
-# from churchapi.pagination import pagePagination
+from churchapi.pagination import StandardResultsSetPagination
 
 # Member - List Create
 class MemberListAV(generics.ListCreateAPIView):
+    queryset = member.objects.select_related('entity').all()
+    # pagination_class = StandardResultsSetPagination
     serializer_class = MemberSerializer
-    # pagination_class = pagePagination
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['first_name', 'last_name', 'person_submitting', 'email_address', 'phone']
-    def get_queryset(self):
-        membershipInfo = member.objects.filter()
-        return membershipInfo
+    # search_fields = ['first_name', 'last_name', 'person_submitting', 'email_address', 'phone']
 
 # Member - Retrieve Update Destroy
 class MemberDetailsAV(generics.RetrieveUpdateDestroyAPIView):
