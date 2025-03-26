@@ -21,18 +21,12 @@ class CollectionSerializer(serializers.ModelSerializer):
         return None
 
     def get_transactions(self, obj):
-        # transactions = {
-        #     "Tithes": obj.ct_collection_id.filter(collection_type="Tithes").values(),
-        #     "Mission": obj.ct_collection_id.filter(collection_type="Mission").values(),
-        #     "Partnership": obj.ct_collection_id.filter(collection_type="Partnership").values(),
-        #     "Offering": obj.ct_collection_id.filter(collection_type="Offering").values(),
-        # }
-
         transactions = {
             "Tithes": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Tithes").select_related('member', 'collection'), many=True).data,
             "Mission": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Mission").select_related('member', 'collection'), many=True).data,
             "Partnership": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Partnership").select_related('member', 'collection'), many=True).data,
             "Offering": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Offering").select_related('member', 'collection'), many=True).data,
+            "Normal": CollectionTransactionSerializer(obj.ct_collection_id.filter(collection_type="Normal").select_related('member', 'collection'), many=True).data,
         }
 
         # Calculate Grand Total
@@ -44,14 +38,6 @@ class CollectionSerializer(serializers.ModelSerializer):
         transactions["grand_total"] = grand_total
 
         return transactions
-
-    # def get_transactions(self, obj):
-    #     collection_types = ["Tithes", "Mission", "Partnership", "Offering"]
-    #     grouped = {}
-    #     for type in collection_types:
-    #         transactions = obj.ct_collection_id.filter(collection_type=type)
-    #         grouped[type] = CollectionTransactionSerializer(transactions, many=True).data
-    #     return grouped
 
 class CollectionTransactionSerializer(serializers.ModelSerializer):
     member_name = serializers.SerializerMethodField()

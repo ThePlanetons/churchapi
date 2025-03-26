@@ -5,7 +5,8 @@ COLLECTION_TYPE_CHOICES = [
     ('tithes', 'Tithes'),
     ('mission', 'Mission'),
     ('partnership', 'Partnership'),
-    ('offering', 'Offering')
+    ('offering', 'Offering'),
+    ('normal', 'Normal'),
 ]
 
 TRANSACTION_TYPE_CHOICES = [

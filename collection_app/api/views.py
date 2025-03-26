@@ -81,7 +81,7 @@ class CollectionViewSet(viewsets.ViewSet):
             )
 
             # Save Collection Transactions with bulk_create
-            collection_types = ["Tithes", "Mission", "Partnership", "Offering"]
+            collection_types = ["Tithes", "Mission", "Partnership", "Offering", "Normal"]
             transactions_to_create = []
 
             for collection_type in collection_types:
@@ -126,7 +126,7 @@ class CollectionViewSet(viewsets.ViewSet):
             collection_obj.date = request.data["date"]
             collection_obj.save()
 
-            collection_types = ["Tithes", "Mission", "Partnership", "Offering"]
+            collection_types = ["Tithes", "Mission", "Partnership", "Offering", "Normal"]
             existing_transactions = collection_transaction.objects.filter(collection=collection_obj)
             existing_transaction_ids = {tx.transaction_id for tx in existing_transactions}
             new_transaction_ids = set()
