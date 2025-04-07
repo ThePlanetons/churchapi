@@ -11,6 +11,10 @@ from django.db import transaction
 from collection_app.models import collection, collection_transaction
 from member_app.models import member
 
+from django.db.models import Sum
+from django.http import JsonResponse
+from rest_framework.views import APIView
+
 import shortuuid
 
 # Collection - List Create
@@ -174,3 +178,38 @@ class CollectionViewSet(viewsets.ViewSet):
 
         except Exception as e:
             return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class CollectionSummaryView(APIView):
+    def get(self, request):
+        # Get month and year from query params
+        month = request.GET.get('month')
+        year = request.GET.get('year')
+
+        if not month or not year:
+            return JsonResponse({'error': 'Month and year are required.'}, status=400)
+
+        try:
+            month = int(month)
+            year = int(year)
+        except ValueError:
+            return JsonResponse({'error': 'Month and year must be integers.'}, status=400)
+
+        # Filter transactions by month and year of the related collection's date
+        results = (
+            collection_transaction.objects
+            .filter(collection__date__year=year, collection__date__month=month)
+            .values('collection__date')
+            .annotate(grand_total=Sum('collection_amount'))
+            .order_by('collection__date')
+        )
+
+        # Format the result nicely
+        data = [
+            {
+                'date': result['collection__date'].strftime('%Y-%m-%d'),
+                'grand_total': float(result['grand_total'])
+            }
+            for result in results
+        ]
+
+        return JsonResponse(data, safe=False)
